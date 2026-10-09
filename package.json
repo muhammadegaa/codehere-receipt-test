@@ -1,0 +1,8 @@
+{
+  "name": "receipt-test",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}

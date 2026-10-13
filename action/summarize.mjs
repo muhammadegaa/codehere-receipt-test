@@ -38,6 +38,16 @@ if (!receipt) {
   receipt = `${MARKER}\n> **codehere · verified outcome receipt** — couldn't run the check (${reason.trim().slice(0, 200)}) · unverified · ${when}`;
 }
 
+// On a pull request the receipt's commit is GitHub's temporary merge commit, which a fresh clone does not have.
+const { PR_NUMBER, PR_HEAD_SHA } = process.env;
+if (PR_NUMBER && PR_HEAD_SHA) {
+  receipt = receipt.replace(
+    /^> Reproduce independently: `git checkout ([0-9a-f]+) && (.+)`$/m,
+    (_, merge, cmd) =>
+      `> Reproduce independently: \`git fetch origin refs/pull/${PR_NUMBER}/merge && git checkout FETCH_HEAD && ${cmd}\` (PR head \`${PR_HEAD_SHA.slice(0, 7)}\`, checked as merge \`${merge}\`; the merge ref moves when the PR or its base changes)`,
+  );
+}
+
 writeFileSync(receiptPath, receipt.trim() + '\n');
 if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, `verdict=${verdict}\n`);
 console.log(`verdict=${verdict}`);

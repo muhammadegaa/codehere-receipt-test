@@ -43,6 +43,8 @@ runs:
         CODEHERE_TEST_CMD: ${{ inputs.test-command }}
         CODEHERE_VERSION: ${{ inputs.version }}
         BASE_REF: ${{ github.base_ref }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         # Untrusted text: passed through the environment, never interpolated into the script.
         CLAIM: ${{ github.event.pull_request.body }}
       run: |
@@ -79,4 +81,7 @@ runs:
         if [ "$VERDICT" = "unverified" ] && [ "$FAIL_ON_UNVERIFIED" = "true" ]; then
           echo "::error::codehere: nothing could be verified."
           exit 1
+        fi
+        if [ "$VERDICT" = "unverified" ]; then
+          echo "::warning::codehere: nothing could be verified, so this green job is not a pass. See the receipt."
         fi

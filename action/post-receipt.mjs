@@ -45,7 +45,7 @@ try {
   let existing;
   for (let page = 1; page <= 5 && !existing; page++) {
     const batch = await api('GET', `${base}/${pr}/comments?per_page=100&page=${page}`);
-    existing = batch.find((c) => typeof c.body === 'string' && c.body.includes(MARKER));
+    existing = batch.find((c) => c.user?.type === 'Bot' && typeof c.body === 'string' && c.body.includes(MARKER));
     if (batch.length < 100) break;
   }
   if (existing) await api('PATCH', `${base}/comments/${existing.id}`, { body: receipt });

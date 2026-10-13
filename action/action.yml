@@ -43,6 +43,8 @@ runs:
         CODEHERE_TEST_CMD: ${{ inputs.test-command }}
         CODEHERE_VERSION: ${{ inputs.version }}
         BASE_REF: ${{ github.base_ref }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         # Untrusted text: passed through the environment, never interpolated into the script.
         CLAIM: ${{ github.event.pull_request.body }}
       run: |

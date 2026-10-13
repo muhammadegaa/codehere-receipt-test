@@ -82,3 +82,6 @@ runs:
           echo "::error::codehere: nothing could be verified."
           exit 1
         fi
+        if [ "$VERDICT" = "unverified" ]; then
+          echo "::warning::codehere: nothing could be verified, so this green job is not a pass. See the receipt."
+        fi

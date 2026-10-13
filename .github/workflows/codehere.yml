@@ -16,4 +16,4 @@ jobs:
           node-version: 20
       - uses: ./action
         with:
-          version: https://raw.githubusercontent.com/${{ github.repository }}/main/vendor/codehere-1.0.2.tgz
+          version: latest
